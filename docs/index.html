@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>HelloWorld</title>
+    <style type="text/css">
+        #hello-world {
+            position: fixed;
+            white-space: nowrap;
+            cursor: default;
+            font-size: 48px;
+            color: #ffffff;
+            background-color: #000000;
+        }
+    </style>
+</head>
+    <body>
+        <div id="hello-world">Hello, World!</div>
+        <script type="text/javascript">
+
+            let mouse = { x: 0, y: 0, down: false, };
+
+            let hello = {
+                obj: document.getElementById("hello-world"),
+                
+                get left() {
+                    return parseInt(this.obj.style.left);
+                },
+                set left(value) {
+                    if (value < 0) {
+                        value = 0;
+                    }
+                    else if (value > window.innerWidth - this.width) {
+                        value = window.innerWidth - this.width;
+                    }
+                    this.obj.style.left = `${value}px`;
+                },
+                get top() {
+                    return parseInt(this.obj.style.top);
+                },
+                set top(value) {
+                    if (value < 0) {
+                        value = 0;
+                    }
+                    else if (value > window.innerHeight - this.height) {
+                        value = window.innerHeight - this.height;
+                    }
+                    this.obj.style.top = `${value}px`;
+                },
+                get right() {
+                    return parseInt(this.obj.style.left) + parseInt(this.obj.clientWidth);
+                },
+                get bottom() {
+                    return parseInt(this.obj.style.top) + parseInt(this.obj.clientHeight);
+                },
+                get width() {
+                    return this.obj.clientWidth;
+                },
+                get height() {
+                    return this.obj.clientHeight;
+                },
+            };
+
+            window.onload = function () {
+                hello.left = (window.innerWidth - hello.width) / 2;
+                hello.top = (window.innerHeight - hello.height) / 2;
+            };
+
+            window.onresize = function () {
+                hello.left = hello.left;
+                hello.top = hello.top;
+            };
+
+            window.onmousedown = window.ontouchstart = function (e) {
+                mouse.down = true;
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                return false;
+            };
+
+            window.onmousemove = window.ontouchmove = function (e) {
+                if (!mouse.down) return;
+                hello.left += e.clientX - mouse.x;
+                hello.top += e.clientY - mouse.y;
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            };
+
+            window.onmouseup = window.ontouchend = function (e) {
+                mouse.down = false;
+            };
+
+        </script>
+    </body>
+</html>
